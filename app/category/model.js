@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const categorySchema = mongoose.Schema({
     name: {
         type: String,
-        required: [true, 'Nama kategori harus di isi!']
+        require: [true, 'Nama kategori harus di isi!']
     }
 });
 
