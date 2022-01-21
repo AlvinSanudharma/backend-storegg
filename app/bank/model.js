@@ -12,6 +12,6 @@ const bankSchema = mongoose.Schema({
         type: String,
         require: [true, 'Nomor Rekening harus di isi!']
     },
-});
+}, {timestamp: true});
 
 module.exports = mongoose.model('Bank', bankSchema);

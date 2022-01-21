@@ -25,6 +25,6 @@ const voucherSchema = mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'
     },
-});
+}, {timestamp: true});
 
 module.exports = mongoose.model('Voucher', voucherSchema);
