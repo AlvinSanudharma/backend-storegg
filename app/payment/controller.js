@@ -13,7 +13,7 @@ module.exports = {
       }
 
       const payment = await Payment.find().populate('banks');
-      console.log(payment);
+      // console.log(payment);
       res.render("admin/payment/view_payment", {
         payment,
         alert,

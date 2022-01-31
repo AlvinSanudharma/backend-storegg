@@ -4,11 +4,11 @@ const bankSchema = mongoose.Schema({
         type: String,
         require: [true, 'Nama Pemilik harus di isi!']
     },
-    nameBank: {
+    bankName: {
         type: String,
         require: [true, 'Nama Bank harus di isi!']
     },
-    nomorRekening: {
+    noRekening: {
         type: String,
         require: [true, 'Nomor Rekening harus di isi!']
     },
