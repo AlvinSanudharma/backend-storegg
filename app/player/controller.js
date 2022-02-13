@@ -4,6 +4,10 @@ const Nominal = require('../nominal/model');
 const Payment = require('../payment/model');
 const Bank = require('../bank/model');
 const Transaction = require('../transaction/model');
+const Player = require('../player/model');
+const path = require("path");
+const fs = require("fs");
+const config = require("../../config") 
 
 module.exports = {
     landingPage: async (req, res) => {
@@ -161,5 +165,124 @@ module.exports = {
         } catch (error) {
             res.status(500).json({message: error.message || 'Internal Server Error!'});
         }
-    }
+    },
+
+    dashboard: async (req, res) => {
+        try {
+            const count = await Transaction.aggregate([{
+                $match: {player: req.player._id}
+            }, {
+                $group: {_id: '$category', value: {$sum: '$value'}}
+            }]);
+
+            const category = await Category.find({})
+
+            category.forEach(element => {
+                count.forEach(data => {
+                    if (data._id.toString() === element._id.toString()) {
+                        data.name = element.name
+                    }
+                })
+            })
+
+            const history = await Transaction.find({player: req.player._id})
+                .populate('category')
+                .sort({'updatedAt': -1})
+
+            res.status(200).json({
+                data: history, 
+                count
+            })
+        } catch (error) {
+            res.status(500).json({message: error.message || 'Internal Server Error!'});
+        }
+    },
+
+    profile:  (req, res) => {
+        try {
+            const player = {
+                id: req.player._id,
+                username: req.player.username,
+                email: req.player.email,
+                name: req.player.name,
+                avatar: req.player.avatar,
+                phoneNumber: req.player.phoneNumber,
+            }
+
+            res.status(200).json({
+                data: player
+            })
+        } catch (error) {
+            res.status(500).json({message: error.message || 'Internal Server Error!'});
+        }
+    },
+
+    editProfile: async (req, res, next) => {
+        try {
+            const {name = "", phoneNumber = "" } = req.body
+            const payload = {}
+
+            if (name.length) payload.name = name;
+            if (phoneNumber.length) payload.phoneNumber = phoneNumber;
+
+            if (req.file) {
+                let tmpPath = req.file.path;
+                let originalExt = req.file.originalname.split('.')[req.file.originalname.split('.').length - 1];
+                let fileName = req.file.filename + '.' + originalExt;
+                let targetPath = path.resolve(config.rootPath, `public/uploads/${fileName}`);
+
+                const src = fs.createReadStream(tmpPath);
+                const dest = fs.createWriteStream(targetPath);
+
+                src.pipe(dest);
+                src.on('end', async () => {
+                    let player = await Player.findOne({_id: req.player._id});
+                    let currentImage = `${config.rootPath}/public/uploads/${player.avatar}`;
+
+                    if(fs.existsSync(currentImage)) {
+                    fs.unlinkSync(currentImage);
+                    }
+
+                    player = await Player.findOneAndUpdate({
+                    _id: req.player._id
+                    }, {
+                    ...payload,
+                    avatar: fileName
+                    }, {new: true, runValidators: true});
+
+                    res.status(201).json({
+                        id: player.id,
+                        name: player.name,
+                        phoneNumber: player.phoneNumber,
+                        avatar: player.avatar, 
+                    })
+                })
+                src.on('err', async () => {
+                    next()
+                })
+
+            }else{  
+                const player = await Player.findOneAndUpdate({
+                    _id: req.player._id
+                }, payload, {new: true, runValidators: true})
+
+                res.status(201).json({
+                    data: {
+                        id: player.id,
+                        name: player.name,
+                        phoneNumber: player.phoneNumber,
+                        avatar: player.avatar,
+                    }
+                })
+            }
+        } catch (error) {
+            if (error && error.name === "ValidationError") {
+                res.status(422).json({
+                    error: 1,
+                    message: error.message, 
+                    fields: error.erros
+                });
+            }
+        }
+    } 
 }
