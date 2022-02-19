@@ -12,7 +12,7 @@ module.exports = {
       }
 
       const nominal = await Nominal.find();
-    //   console.log(nominal);
+      // console.log(nominal);
       res.render("admin/nominal/view_nominal", {
         nominal,
         alert,

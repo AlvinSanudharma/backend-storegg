@@ -8,7 +8,7 @@ const nominalSchema = mongoose.Schema({
         type: String,
         require: [true, 'Nama coin harus di isi!']
     },
-    coinPrice: {
+    price: {
         type: Number,
         default: 0
     }
