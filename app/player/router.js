@@ -7,7 +7,7 @@ const os = require("os");
 
 /* GET home page. */
 router.get("/landing-page", landingPage);
-router.get("/detail/:id", detailPage);
+router.get("/:id/detail", detailPage);
 router.get("/category", category);
 router.post("/checkout", isLoginPlayer, checkout);
 router.get("/history", isLoginPlayer, history);
