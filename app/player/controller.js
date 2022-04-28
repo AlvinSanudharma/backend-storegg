@@ -18,7 +18,7 @@ module.exports = {
             
             res.status(200).json({data: voucher})
         } catch (error) {
-            res.status(500).json({message: error.message || 'Internal Server Error!'});
+            res.status(500).json({message: error.message || 'Internal Server Error'});
         }
     },
     detailPage: async (req, res) => {
@@ -34,7 +34,7 @@ module.exports = {
             .populate('banks')
             
             if (!voucher) {
-                return res.status(404).json({message: 'Voucher Not Found !'})
+                return res.status(404).json({message: 'Voucher Tidak Ditemukan !'})
             }
 
             res.status(200).json({
