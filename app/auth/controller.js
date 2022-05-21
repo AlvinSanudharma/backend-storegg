@@ -95,7 +95,7 @@ module.exports = {
                     })
                 } else {
                     res.status(403).json({
-                        message: "Password yang anda masukan belum terdaftar!"
+                        message: "Password yang anda Salah!"
                     })
                 }
             } else {
