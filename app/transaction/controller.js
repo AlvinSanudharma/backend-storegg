@@ -12,7 +12,7 @@ module.exports = {
       }
 
       const transaction = await Transaction.find().populate('player');
-      // console.log(transaction);
+     
       res.render("admin/transaction/view_transaction", {
         transaction,
         alert,

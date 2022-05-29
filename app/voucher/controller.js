@@ -17,7 +17,7 @@ module.exports = {
       }
 
       const voucher = await Voucher.find().populate('category').populate('nominals');
-      // console.log(voucher);
+      
       res.render("admin/voucher/view_voucher", {
         voucher,
         alert,
@@ -35,8 +35,7 @@ module.exports = {
     try {
       const category = await Category.find();
       const nominal = await Nominal.find();
-      // console.log(category);
-      // console.log(nominal);
+     
       res.render("admin/voucher/create", {
         category,
         nominal,
@@ -53,7 +52,7 @@ module.exports = {
   actionCreate: async (req, res) => {
     try {
       const {name, category, nominals} = req.body;
-      // console.log(req.file)
+     
       if(req.file) {
         let tmpPath = req.file.path;
         let originalExt = req.file.originalname.split('.')[req.file.originalname.split('.').length - 1];
@@ -112,7 +111,7 @@ module.exports = {
       const category = await Category.find();
       const nominal = await Nominal.find();
       let voucher = await Voucher.findOne({_id: id}).populate('category').populate('nominals').exec();
-        // console.log(voucher)
+      
       res.render("admin/voucher/edit", {voucher, category, nominal, 
         title: 'Halaman Edit Voucher',
         name: req.session.user.name,
@@ -128,7 +127,7 @@ module.exports = {
     try {
       const {id} = req.params;
       const {name, category, nominals} = req.body;
-      // console.log(req.file)
+      
       if(req.file) {
         let tmpPath = req.file.path;
         let originalExt = req.file.originalname.split('.')[req.file.originalname.split('.').length - 1];
@@ -193,7 +192,7 @@ module.exports = {
       const voucher = await Voucher.findOneAndRemove({_id: id});
 
       let currentImage = `${config.rootPath}/public/uploads/${voucher.thumbnail}`;
-      console.log(currentImage)
+      
       if(fs.existsSync(currentImage)) {
         fs.unlinkSync(currentImage);
       }

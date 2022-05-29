@@ -13,7 +13,7 @@ module.exports = {
       }
 
       const payment = await Payment.find().populate('banks');
-      // console.log(payment);
+     
       res.render("admin/payment/view_payment", {
         payment,
         alert,
@@ -46,7 +46,7 @@ module.exports = {
   actionCreate: async (req, res) => {
     try {
       const {type, banks} = req.body;
-    //   console.log(coinPrice)
+  
       let payment = new Payment({type, banks});
       await payment.save();
 
@@ -66,7 +66,7 @@ module.exports = {
       const {id} = req.params;
       let payment = await Payment.findOne({_id: id}).populate('banks').exec();
       let banks = await Bank.find();
-        console.log(payment)
+       
       res.render("admin/payment/edit", {payment, banks, 
         title: 'Halaman Edit Payment',
         name: req.session.user.name,

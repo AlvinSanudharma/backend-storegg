@@ -12,7 +12,7 @@ module.exports = {
       }
 
       const bank = await Bank.find();
-    //   console.log(bank);
+    
       res.render("admin/bank/view_bank", {
         bank,
         alert,
@@ -44,7 +44,7 @@ module.exports = {
     try {
       const {name, nameBank, nomorRekening} = req.body;
       let bank = new Bank({name, nameBank, nomorRekening});
-    //   console.log(bank)
+  
       await bank.save();
 
       req.flash('alertMessage', "Berhasil tambah data");
@@ -62,7 +62,7 @@ module.exports = {
     try {
       const {id} = req.params;
       let bank = await Bank.findOne({_id: id}).exec();
-        // console.log(bank)
+       
       res.render("admin/bank/edit", {bank, 
         name: req.session.user.name,
         title: 'Halaman Edit Bank'});

@@ -11,7 +11,6 @@ module.exports = {
             const payload = req.body;
 
             if (req.file) {
-                // console.log(req.file);
                 let tmpPath = req.file.path;
                 let originalExt = req.file.originalname.split('.')[req.file.originalname.split('.').length - 1];
                 let fileName = req.file.filename + '.' + originalExt;
@@ -73,7 +72,6 @@ module.exports = {
         const {email, password} = req.body;
 
         Player.findOne({email: email}).then(player => {
-            // console.log(player);
             if (player) {
                 const checkPassword = bcrypt.compareSync(password, player.password);
 

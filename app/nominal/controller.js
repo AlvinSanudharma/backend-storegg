@@ -12,7 +12,7 @@ module.exports = {
       }
 
       const nominal = await Nominal.find();
-      // console.log(nominal);
+      
       res.render("admin/nominal/view_nominal", {
         nominal,
         alert,
@@ -42,7 +42,7 @@ module.exports = {
   actionCreate: async (req, res) => {
     try {
       const {coinName, coinQuantity, coinPrice} = req.body;
-    //   console.log(coinPrice)
+    
       let nominal = new Nominal({coinName, coinQuantity, coinPrice});
       await nominal.save();
 
@@ -61,7 +61,7 @@ module.exports = {
     try {
       const {id} = req.params;
       let nominal = await Nominal.findOne({_id: id}).exec();
-        // console.log(nominal)
+       
       res.render("admin/nominal/edit", {nominal,
         title: 'Halaman Edit Nominal',
         name: req.session.user.name,

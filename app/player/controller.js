@@ -77,7 +77,7 @@ module.exports = {
 
             const res_bank = await Bank.findOne({_id: bank})
             if(!res_bank) return res.status(404).json({message: 'Bank Not Found!'})
-            // console.log(res_bank)
+            
             const tax = (10 / 100) * res_nominal._doc.price;
             const value = res_nominal._doc.price - tax;
             const payload = {
