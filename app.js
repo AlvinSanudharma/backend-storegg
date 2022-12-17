@@ -7,6 +7,8 @@ var methodOverride = require('method-override');
 var session = require('express-session');
 var flash = require('connect-flash');
 var cors = require('cors')
+var minify = require('express-minify');
+var compression = require('compression')
 
 var categoryRouter = require("./app/category/router");
 const dashboardRouter = require("./app/dashboard/router");
@@ -23,6 +25,10 @@ var app = express();
 const URL = `/api/v1` 
 
 app.use(cors())
+
+app.use(compression());
+app.use(minify());
+app.use(express.static(__dirname + '/static'));
 
 // view engine setup
 app.set("views", path.join(__dirname, "views"));
